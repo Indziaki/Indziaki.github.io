@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SVG Filter</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz');
+
+        body, html {
+            margin: 0;
+            text-align: center;
+            height: 100%;
+        }
+
+        .wrapper {
+            width: 100%;
+            margin: 0 auto;
+            height: 100%;
+        }
+        .myimage{
+            position: absolute;
+            left: 0;
+            max-width: 100%;
+            max-height: 100%;
+            -webkit-filter: url(#noise);
+            filter: url(#noise);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <svg viewBox="0 0 180 100" style="position: absolute; left:0">
+            <filter id='noise' x='0%' y='0%' width='100%' height='120%'>
+                <feTurbulence baseFrequency="0.1 0.1" result="NOISE" numOctaves="1" seed="53"/>
+                <feDisplacementMap in="SourceGraphic" in2="NOISE" scale="20" xChannelSelector="R" yChannelSelector="R"></feDisplacementMap>  
+            </filter>
+        </svg>
+        <img class="myimage" src="https://images.unsplash.com/photo-1513624954087-ca7109c0f710?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80" />
+
+    </div>  
+    <script>
+        var img = document.querySelector("feTurbulence");
+        var frames = 0;
+        var rad = Math.PI / 180;
+        function AnimateBaseFrequency() {
+            bfx = 0.1;
+            bfy = 0.1;
+            frames += .4
+            bfx += 0.001 * Math.cos(frames * rad);
+            bfy += 0.005 * Math.sin(frames * rad);
+
+            bf = bfx.toString() + ' ' + bfy.toString();
+            img.setAttributeNS(null, 'baseFrequency', bf);
+
+            window.requestAnimationFrame(AnimateBaseFrequency);
+        }
+
+        window.requestAnimationFrame(AnimateBaseFrequency);
+    </script>
+</body>
+</html>
